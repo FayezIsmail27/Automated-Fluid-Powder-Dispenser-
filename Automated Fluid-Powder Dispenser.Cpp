@@ -5,7 +5,7 @@
 #define START_BUTTON A1       
 #define EMERGENCY_STOP A2     
 #define LIMIT_SWITCH A3      
-#define IR_PIN A4             // Pin for the infrared (IR) sensor input
+#define IR_PIN A4             
 
 // Initialize motor and pump objects on specific motor shield channels
 AF_DCMotor motor(1);          
@@ -15,15 +15,14 @@ AF_DCMotor pump(2);
 Servo Servo1;                 
 
 // Constant values to define motor behavior and servo positions
-const int MOTOR_SPEED = 255;      // Maximum speed for motor and pump
+const int MOTOR_SPEED = 255;      
 const int SERVO_OPEN_ANGLE = 90;  
 const int SERVO_CLOSE_ANGLE = 45; 
-const int DISPENSE_TIME_MS = 10000; // Time in milliseconds for the pump to operate
+const int DISPENSE_TIME_MS = 10000; 
 
 // Array storing concentration values (used to control the servo timing)
 int concentrationValues[5] = {1, 2, 3, 4, 8}; 
 
-// Variable to track the system's running state
 bool isRunning = false;
 
 void setup() {
@@ -58,8 +57,8 @@ void loop() {
   // If the emergency stop button is pressed, stop all operations immediately
   if (emergencyStopState == LOW) {
     isRunning = false;
-    stopAll();  // Call function to halt motors, pump, and servo
-    return;     // Exit loop early to prevent further actions
+    stopAll();  
+    return;     
   }
 
   // If the start button is pressed, set the system to the running state
@@ -84,6 +83,7 @@ void loop() {
 void dispense() {
   // Loop through each concentration value to perform a series of dispensing actions
   for (int i = 0; i < 5; i++) {
+
     // Operate the servo to the open position, wait, then close it
     Serial.println("Operating Servo.");
     Servo1.write(SERVO_OPEN_ANGLE);             
@@ -103,9 +103,10 @@ void dispense() {
 }
 
 void stopAll() {
+
   // Function to stop all moving parts in case of emergency or completion
-  motor.run(RELEASE);          // Stop the motor
-  pump.run(RELEASE);           // Stop the pump
-  Servo1.write(SERVO_CLOSE_ANGLE); // Reset servo to close position
+  motor.run(RELEASE);          
+  pump.run(RELEASE);           
+  Servo1.write(SERVO_CLOSE_ANGLE); 
   Serial.println("Emergency Stop Activated. All operations STOPED.");
 }
